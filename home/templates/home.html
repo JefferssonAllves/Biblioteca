@@ -1,0 +1,56 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block 'head' %}
+  <link rel="stylesheet" href="{% static 'general/vendors/owl-carousel-2/owl.carousel.min.css' %}">
+{% endblock %}
+{% block 'content' %}
+  {% for livro in livros %}
+    <p id="teste"></p>
+    <div class="col-md-6 col-xl-4 grid-margin stretch-card">
+      <div class="card">
+        <div class="card-body">
+          <h4 class="card-title">Portfolio Slide</h4>
+          <div class="owl-carousel owl-theme full-width owl-carousel-dash portfolio-carousel owl-loaded owl-drag" id="owl-carousel-basic">
+            <div class="owl-stage-outer">
+              <div class="owl-stage" style="transform: translate3d(-1342px, 0px, 0px); transition: 0.25s; width: 2351px;">
+                <div class="owl-item cloned" style="width: 325.725px; margin-right: 10px;">
+                  <div class="item">
+                    <img src="{% static 'general/img/dashboard/img_1.jpg' %}" alt="">
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="owl-nav"><button type="button" role="presentation" class="owl-prev"><i
+                  class="mdi mdi-chevron-left"></i></button><button type="button" role="presentation" class="owl-next"><i
+                  class="mdi mdi-chevron-right"></i></button></div>
+            <div class="owl-dots disabled"></div>
+          </div>
+          <div class="d-flex py-4">
+            <div class="preview-list w-100">
+              <div class="preview-item p-0">
+                <div class="preview-thumbnail">
+                  <img src="{% static 'general/img/faces/face12.jpg' %}" class="rounded-circle" alt="">
+                </div>
+                <div class="preview-item-content d-flex flex-grow">
+                  <div class="flex-grow">
+                    <div class="d-flex d-md-block d-xl-flex justify-content-between">
+                      <h6 class="preview-subject">CeeCee Bass</h6>
+                      <p class="text-muted text-small">4 Hours Ago</p>
+                    </div>
+                    <p class="text-muted">Well, it seems to be working now.</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  {% endfor %}
+{% endblock %}
+
+
+{% block 'script' %}
+  <script src="{% static 'general/js/dashboard.js' %}"></script>
+{% endblock %}
