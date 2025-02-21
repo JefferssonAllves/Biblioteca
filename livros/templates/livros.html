@@ -20,7 +20,7 @@
             </div>
             <div class="col-md-8">
               <input type="hidden" id="url_busca" value="{{ url_busca }}">
-              <input type="text" class="form-control" placeholder="Procurar livro pelo nome" oninput="realizar_busca(this, get_url_livros(), 'livros', 'titulo')">
+              <input type="text" class="form-control" placeholder="Procurar livro pelo título" oninput="realizar_busca(this, get_url_livros(), 'livros', 'titulo')">
             </div>
             <div class="container-tabela">
               <table class="table table-bordered table-striped table-hover" id="tabela-livros">{% csrf_token %}

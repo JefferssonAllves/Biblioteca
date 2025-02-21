@@ -24,22 +24,22 @@
                 <thead>
                   <tr>
                     <th width="10" justify="center"> ID</th>
-                    <th> CPF </th>
                     <th> Nome </th>
-                    <th> Endereço </th>
-                    <th> Telefone </th>
+                    <th> CPF </th>
                     <th> Email </th>
+                    <th> Telefone </th>
+                    <th> Endereço </th>
                   </tr>
                 </thead>
                 <tbody id="corpo-tabela">
                   {% for cliente in clientes %}
                     <tr>
                       <td> {{cliente.id}} </td>
-                      <td> {{cliente.cpf}} </td>
                       <td> {{cliente.nome}} </td>
-                      <td> {{cliente.endereco}} </td>
-                      <td> {{cliente.telefone}} </td>
+                      <td> {{cliente.cpf}} </td>
                       <td> {{cliente.email}} </td>
+                      <td> {{cliente.telefone}} </td>
+                      <td> {{cliente.endereco}} </td>
                     </tr>
                   {% endfor %}
                 </tbody>

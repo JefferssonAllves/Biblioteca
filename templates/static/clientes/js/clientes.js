@@ -85,11 +85,11 @@ function exibir_itens(clientes) {
       const novaLinha = $(`
         <tr>
           <td>${cliente.id}</td>
-          <td>${cliente.cpf}</td>
           <td>${cliente.nome}</td>
-          <td>${cliente.endereco}</td>
-          <td>${cliente.telefone}</td>
+          <td>${cliente.cpf}</td>
           <td>${cliente.email}</td>
+          <td>${cliente.telefone}</td>
+          <td>${cliente.endereco}</td>
         </tr>
       `);
       $("#corpo-tabela").append(novaLinha);
@@ -99,4 +99,27 @@ function exibir_itens(clientes) {
 
 function get_url_clientes() {
   return document.getElementById("url_busca").value;
+}
+
+function alugar_livro(id) {
+  livro_id = id.value;
+  csrf_token = document.querySelector("[name=csrfmiddlewaretoken]");
+  console.log(id)
+  data = new FormData();
+  data.append("livro_id", livro_id);
+  url = window.location.href + "alugar_livro/";
+
+  fetch(url, {
+    method: "POST",
+    headers: {
+      "X-CSRFToken": csrf_token.value,
+    },
+    body: data,
+  })
+    .then(function (result) {
+      return result.json();
+    })
+    .then(function (data) {
+      window.location.href = window.location.href;
+    });
 }

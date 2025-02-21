@@ -14,26 +14,26 @@
         <form class="forms-sample" method="POST" action="{% url 'cliente_update' id=cliente.id %}">{% csrf_token %}
           <input type="hidden" value="{{cliente.id}}" id="cliente_id">
           <div class="form-group">
+            <label for="exampleInputName1">Nome</label>
+            <input type="text" class="form-control" name="nome" value="{{cliente.nome}}">
+          </div>
+          <div class="form-group">
             <label for="exampleInputName1">CPF</label>
             <input type="text" class="form-control" oninput="mascaraCPF(this)" name="cpf" maxlength="14"
               value="{{cliente.cpf}}">
           </div>
           <div class="form-group">
-            <label for="exampleInputName1">Nome</label>
-            <input type="text" class="form-control" name="nome" value="{{cliente.nome}}">
-          </div>
-          <div class="form-group">
-            <label for="exampleInputName1">Endereço</label>
-            <input type="text" class="form-control" name="endereco" value="{{cliente.endereco}}">
+            <label for="exampleInputEmail3">Email</label>
+            <input type="email" class="form-control" name="email" value="{{cliente.email}}">
           </div>
           <div class="form-group">
             <label for="exampleInputName1">telefone</label>
             <input type="text" class="form-control" name="telefone" oninput="mascaraTelefone(this)" maxlength="15"
-              value="{{cliente.telefone}}">
+            value="{{cliente.telefone}}">
           </div>
           <div class="form-group">
-            <label for="exampleInputEmail3">Email</label>
-            <input type="email" class="form-control" name="email" value="{{cliente.email}}">
+            <label for="exampleInputName1">Endereço</label>
+            <input type="text" class="form-control" name="endereco" value="{{cliente.endereco}}">
           </div>
           <button type="submit" class="btn btn-primary mr-2">Salvar Alterações</button>
           <button type="button" onclick="excluir_cliente()" class="btn btn-danger mr-2">Excluir Cliente</button>
@@ -51,13 +51,14 @@
             <h3 class="card-title">Realizar emprestimo de livro ao cliente</h3>
           </div>
           <div class="col-md-6">
-            <input type="text" name="buscar_livros" class="form-control" oninput="realizar_busca(this, get_buscar_livros(), 'livros', 'titulo')" id="">
+            <input type="hidden" id="url_busca" value="{{ url_busca }}">
+            <input type="text" name="buscar_livros" class="form-control" placeholder="Procurar livro pelo título" oninput="realizar_busca(this, get_url_livros(), 'livros', 'titulo')">
           </div>
           <div class="container-tabela">
             <table class="table table-bordered table-striped table-hover" id="tabela-resultados">{% csrf_token %}
               <thead>
                 <tr>
-                  <th width="10" justify="center"> ID</th>
+                  <th width="10" justify="center">ID</th>
                   <th> Titulo </th>
                   <th> Autor </th>
                   <th> Categoria </th>
@@ -67,13 +68,15 @@
               </thead>
               <tbody id="corpo-tabela">
                 {% for livro in livros %}
-                  <tr>
+                <tr>
                     <td> {{livro.id}} </td>
                     <td> {{livro.titulo}} </td>
                     <td> {{livro.autor}} </td>
                     <td> {{livro.categoria}} </td>
                     <td> {{livro.preco_alugar}} </td>
-                    <td> <button type="button" class="btn btn-primary">{{ livro.status }}</button></td>
+                    <td>
+                      <button type="button" class="btn btn-primary" value="{{livro.id}}" onclick="alugar_livro(this)">{{ livro.status }}</button>
+                    </td>
                   </tr>
                 {% endfor %}
               </tbody>
@@ -96,16 +99,27 @@
             <table class="table table-bordered table-striped table-hover" id="tabela-clientes">{% csrf_token %}
               <thead>
                 <tr>
-                  <th width="10" justify="center"> ID</th>
-                  <th> CPF </th>
-                  <th> Nome </th>
-                  <th> Endereço </th>
-                  <th> Telefone </th>
-                  <th> Email </th>
+                  <th width="10" justify="center">ID</th>
+                  <th> Titulo </th>
+                  <th> Autor </th>
+                  <th> Categoria </th>
+                  <th> Preço para alugar </th>
+                  <th width="100" justify="center"> Status </th>
                 </tr>
               </thead>
-              <tbody>
-
+              <tbody id="corpo-tabela">
+                {% for livro in livros_alugados %}
+                <tr>
+                  <td> {{livro.id}} </td>
+                  <td> {{livro.titulo}} </td>
+                  <td> {{livro.autor}} </td>
+                  <td> {{livro.categoria}} </td>
+                  <td> {{livro.preco_alugar}} </td>
+                  <td>
+                    <button type="button" class="btn btn-primary" value="{{livro.id}}" onclick="alugar_livro(this)">{{ livro.status }}</button>
+                  </td>
+                </tr>
+                {% endfor %}
               </tbody>
             </table>
           </div>
@@ -119,6 +133,7 @@
 
 <script src="{% static 'general/js/formatadores.js' %}"></script>
 <script src="{% static 'clientes/js/clientes.js' %}"></script>
+<script src="{% static 'livros/js/livros.js' %}"></script>
 <script src="{% static 'general/js/buscador.js' %}"></script>
 
 {% endblock %}
