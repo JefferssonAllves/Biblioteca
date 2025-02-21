@@ -1,6 +1,7 @@
 from django.shortcuts import render, redirect, reverse
 from django.http import JsonResponse
 from .models import Livros, Categorias
+from clientes.models import Alugados
 from math import ceil
 from django.core import serializers
 import json
@@ -41,9 +42,10 @@ def livro_update(request, id):
       livro.preco_alugar = ceil(preco * 0.15)
       livro.save()
     livro = Livros.objects.get(id=id)
+    historico_livro = Alugados.objects.filter(livro=livro)
   except Exception as e:
     return redirect(reverse('livros'))
-  return render(request, './livro_update.html', {'livro': livro, 'categorias': Categorias.objects.all(), })
+  return render(request, './livro_update.html', {'livro': livro, 'categorias': Categorias.objects.all(), 'historico_livro': historico_livro}) #TODO MOSTRAR O HISTORICO DO LIVRO
 
 def livro_delete(request):
   if request.method == 'POST':
