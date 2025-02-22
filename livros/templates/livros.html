@@ -44,7 +44,21 @@
                     <td> {{livro.ISBN}} </td>
                     <td> {{livro.categoria}} </td>
                     <td> {{livro.preco_venda}} </td>
-                    <td> {{livro.status}} </td>
+                    <td>
+                      <button type="button"
+                        {% if livro.status == livro.DISPONIVEL %}
+                          class="btn btn-success"
+                          disabled
+                        {% elif livro.status == livro.ALUGADO %}
+                          class="btn btn-warning"
+                          disabled
+                        {% else %}
+                          class="btn btn-primary"
+                          disabled
+                        {% endif %}
+                        value="{{livro.id}}">{{ livro.status }}
+                    </button>
+                    </td>
                   </tr>
                   {% endfor %}
                 </tbody>

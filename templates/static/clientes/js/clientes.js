@@ -123,3 +123,35 @@ function alugar_livro(id) {
       window.location.href = window.location.href;
     });
 }
+function modal_attcliente(){
+  modal_escurecer = document.getElementById("container-modal-entrega");
+
+  if (modal_escurecer.style.display == "block") {
+    modal_escurecer.style.display = "none";
+  } else {
+    modal_escurecer.style.display = "block";
+  }
+
+  modal = document.getElementById("modal-attcliente");
+  if (modal.style.display == "block") {
+    modal.style.display = "none";
+  } else {
+    modal.style.display = "block";
+  }
+}
+function modal_devolver_livro() {
+  modal_escurecer = document.getElementById("container-modal-devolver");
+
+  if (modal_escurecer.style.display == "block") {
+    modal_escurecer.style.display = "none";
+  } else {
+    modal_escurecer.style.display = "block";
+  }
+
+  modal = document.getElementById("modal-devolver");
+  if (modal.style.display == "block") {
+    modal.style.display = "none";
+  } else {
+    modal.style.display = "block";
+  }
+}

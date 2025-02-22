@@ -73,9 +73,21 @@
                     <td> {{livro.titulo}} </td>
                     <td> {{livro.autor}} </td>
                     <td> {{livro.categoria}} </td>
-                    <td> {{livro.preco_alugar}} </td>
+                    <td> R${{livro.preco_alugar}} </td>
                     <td>
-                      <button type="button" class="btn btn-primary" value="{{livro.id}}" onclick="alugar_livro(this)">{{ livro.status }}</button>
+                      <button type="button"
+                          {% if livro.status == livro.DISPONIVEL %}
+                            class="btn btn-success"
+                          {% elif livro.status == livro.ALUGADO %}
+                            class="btn btn-warning"
+                            disabled
+                          {% else %}
+                            class="btn btn-primary"
+                            disabled
+                          {% endif %}
+                        value="{{livro.id}}"
+                        onclick="alugar_livro(this)">{{ livro.status }}
+                      </button>
                     </td>
                   </tr>
                 {% endfor %}
@@ -88,6 +100,19 @@
   </div>
 </div>
 <div class="row">
+  <div id="container-modal-devolver" class="modal-overlay"></div>
+  <div id="modal-devolver" class="modal">
+    <h3 class="card-title">Confirmar entrega do livro</h3>
+    <p class="card-description">Tem certeza que deseja efetuar a devolução deste livro?</p>
+    <div class="row">
+      <div class="col">
+        <button type="button" class="btn btn-primary" >Confirmar</button>
+      </div>
+      <div class="col" style="text-align: right;">
+        <button type="button" class="btn btn-danger" onclick="modal_devolver_livro()">Cancelar</button>
+      </div>
+    </div>
+  </div>
   <div class="col-lg-12 grid-margin stretch-card" id="container-editar-cliente">
     <div class="card">
       <div class="card-body" id="container-cliente">
@@ -96,13 +121,14 @@
             <h3 class="card-title">Histórico de livros alugados</h3>
           </div>
           <div class="container-tabela">
-            <table class="table table-bordered table-striped table-hover" id="tabela-clientes">{% csrf_token %}
+            <table class="table table-bordered table-striped table-hover">{% csrf_token %}
               <thead>
                 <tr>
                   <th width="10" justify="center">ID</th>
                   <th> Titulo </th>
-                  <th> Autor </th>
                   <th> Categoria </th>
+                  <th> Data do emprestimo</th>
+                  <th> Data de entrega </th>
                   <th> Preço para alugar </th>
                   <th width="100" justify="center"> Status </th>
                 </tr>
@@ -110,13 +136,26 @@
               <tbody id="corpo-tabela">
                 {% for livro in livros_alugados %}
                 <tr>
-                  <td> {{livro.id}} </td>
-                  <td> {{livro.titulo}} </td>
-                  <td> {{livro.autor}} </td>
-                  <td> {{livro.categoria}} </td>
-                  <td> {{livro.preco_alugar}} </td>
+                  <td> {{livro.livro.id}} </td>
+                  <td> {{livro.livro.titulo}} </td>
+                  <td> {{livro.livro.categoria}} </td>
+                  <td> {{livro.data_inicio}} </td>
+                  <td> {{livro.data_entrega}} </td>
+                  <td> R${{livro.livro.preco_alugar}} </td>
                   <td>
-                    <button type="button" class="btn btn-primary" value="{{livro.id}}" onclick="alugar_livro(this)">{{ livro.status }}</button>
+                    <button type="button"
+                        {% if livro.livro.status == livro.livro.DISPONIVEL %}
+                          class="btn btn-success"
+                          disabled
+                        {% elif livro.livro.status == livro.livro.ALUGADO %}
+                          class="btn btn-warning"
+                        {% else %}
+                          class="btn btn-primary"
+                          disabled
+                        {% endif %}
+                        value="{{livro.livro.id}}"
+                        onclick="modal_devolver_livro()">{{ livro.livro.status }}
+                    </button>
                   </td>
                 </tr>
                 {% endfor %}

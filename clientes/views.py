@@ -42,10 +42,8 @@ def cliente_update(request, id):
       cliente.save()
 
     cliente = Clientes.objects.get(id=id)
-    alugados = Alugados.objects.filter(cliente=id)
-    livros_alugados = []
-    for livro in alugados:
-      livros_alugados.append(Livros.objects.get(id=livro.livro.id))
+    livros_alugados = Alugados.objects.select_related('livro').filter(cliente=id) #TODO LINHA MUITO IMPORTANTE, RELACIONA TABELAS 
+
   except Exception as e:
     return redirect(reverse('clientes'))
   return render(request, './cliente_update.html', {'cliente': cliente, 'livros': Livros.objects.all(), 'url_busca': reverse('livros_json'), 'livros_alugados': livros_alugados})
