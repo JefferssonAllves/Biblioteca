@@ -42,11 +42,11 @@ def cliente_update(request, id):
       cliente.save()
 
     cliente = Clientes.objects.get(id=id)
-    livros_alugados = Alugados.objects.select_related('livro').filter(cliente=id) #TODO LINHA MUITO IMPORTANTE, RELACIONA TABELAS 
+    livros_alugados = Alugados.objects.select_related('livro').filter(cliente=id) #TODO LINHA MUITO IMPORTANTE, RELACIONA TABELAS
 
   except Exception as e:
     return redirect(reverse('clientes'))
-  return render(request, './cliente_update.html', {'cliente': cliente, 'livros': Livros.objects.all(), 'url_busca': reverse('livros_json'), 'livros_alugados': livros_alugados})
+  return render(request, './cliente_update.html', {'cliente': cliente, 'livros': Livros.objects.filter(status=Livros.DISPONIVEL), 'url_busca': reverse('livros_json', args=[str(Livros.DISPONIVEL)]), 'livros_alugados': livros_alugados})
 
 def cliente_delete(request):
   if request.method == 'POST':
@@ -54,11 +54,11 @@ def cliente_delete(request):
     Clientes.objects.filter(id=id).delete()
   return JsonResponse({'redirect': reverse('clientes')})
 
-def alugar_livro(request, id):
+def alugar_livro(request, cliente_id):
   if request.method == 'POST':
     print(request.POST.get('livro_id'))
     livro = Livros.objects.get(id=request.POST.get('livro_id'))
-    cliente = Clientes.objects.get(id=id)
+    cliente = Clientes.objects.get(id=cliente_id)
     data_atual = datetime.now()
     data_futura = data_atual + timedelta(days=30)
     Alugados(cliente=cliente, livro=livro, data_inicio=data_atual, data_entrega=data_futura).save()
@@ -67,9 +67,23 @@ def alugar_livro(request, id):
     livro.save()
   return JsonResponse({'teste':'teste'})
 
+def devolver_livro(request, id):
+  if request.method == 'POST':
+    emprestimo_id = request.POST.get('emprestimo_id')
+
+    emprestimo = Alugados.objects.get(id=emprestimo_id)
+    emprestimo.data_entrega = datetime.now()
+    emprestimo.devolvido = True
+
+    livro_emprestado = Livros.objects.get(id=emprestimo.livro.id)
+    livro_emprestado.status = Livros.DISPONIVEL
+
+    emprestimo.save()
+    livro_emprestado.save()
+  return JsonResponse({'redirect': 'etste'})
 
 
-def clientes_json(request):
+def clientes_json(request): #TODO MELHORAR ESSA FORMA DE RETORNAR CLIENTES
   if request.META.get('HTTP_REFERER'):
     clientes = json.loads(serializers.serialize('json',Clientes.objects.all()))
     clientes = [

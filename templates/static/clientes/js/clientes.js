@@ -104,7 +104,7 @@ function get_url_clientes() {
 function alugar_livro(id) {
   livro_id = id.value;
   csrf_token = document.querySelector("[name=csrfmiddlewaretoken]");
-  console.log(id)
+
   data = new FormData();
   data.append("livro_id", livro_id);
   url = window.location.href + "alugar_livro/";
@@ -123,35 +123,53 @@ function alugar_livro(id) {
       window.location.href = window.location.href;
     });
 }
-function modal_attcliente(){
-  modal_escurecer = document.getElementById("container-modal-entrega");
+function modal_alugar_livro(livro_id) {
+  livro_id = livro_id.value;
+  modal_escurecer = document.getElementById("container-modal-alugar");
+  modal = document.getElementById("modal-alugar");
 
   if (modal_escurecer.style.display == "block") {
     modal_escurecer.style.display = "none";
-  } else {
-    modal_escurecer.style.display = "block";
-  }
-
-  modal = document.getElementById("modal-attcliente");
-  if (modal.style.display == "block") {
     modal.style.display = "none";
   } else {
+    document.getElementById("botao-confirmar-alugar").value = livro_id;
+    modal_escurecer.style.display = "block";
     modal.style.display = "block";
   }
 }
-function modal_devolver_livro() {
+function devolver_livro(emprestimo_id) {
+  emprestimo_id = emprestimo_id.value;
+  csrf_token = document.querySelector("[name=csrfmiddlewaretoken]");
+
+  data = new FormData();
+  data.append("emprestimo_id", emprestimo_id);
+  url = window.location.href + "devolver_livro/";
+  fetch(url, {
+    method: "POST",
+    headers: {
+      "X-CSRFToken": csrf_token.value,
+    },
+    body: data,
+  })
+    .then(function (result) {
+      return result.json();
+    })
+    .then(function (data) {
+      window.location.href = window.location.href;
+    });
+}
+function modal_devolver_livro(livro_id) {
+  livro_id = livro_id.value;
   modal_escurecer = document.getElementById("container-modal-devolver");
+  modal = document.getElementById("modal-devolver");
 
   if (modal_escurecer.style.display == "block") {
     modal_escurecer.style.display = "none";
-  } else {
-    modal_escurecer.style.display = "block";
-  }
-
-  modal = document.getElementById("modal-devolver");
-  if (modal.style.display == "block") {
     modal.style.display = "none";
   } else {
+    document.getElementById("botao-confirmar-devolver").value = livro_id;
+    modal_escurecer.style.display = "block";
     modal.style.display = "block";
   }
+
 }

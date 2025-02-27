@@ -1,0 +1,22 @@
+.titulo-categoria{
+  margin-left: 20px;
+  margin-bottom: 15px;
+  font-size: x-large;
+  font-weight: 600;
+}
+.livros-categoria{
+  margin-bottom: 100px;
+  width: 100%;
+  overflow: hidden;
+  cursor: grab;
+}
+.livros{
+  display: flex;
+  user-select: none;
+  transition: transform 0.2s ease-out;
+}
+.imagem-livro{
+  width: 80%;
+  height: auto;
+
+}

@@ -7,7 +7,7 @@ class Alugados(models.Model):
   livro = models.ForeignKey(Livros, on_delete=models.CASCADE)
   data_inicio = models.DateField()
   data_entrega = models.DateField(null=True)
-
+  devolvido = models.BooleanField(default=False)
   def __str__(self):
     return f'{self.cliente} - {self.livro}'
 

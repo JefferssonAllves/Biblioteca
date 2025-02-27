@@ -159,7 +159,21 @@ function exibir_itens(livros) {
           <td>${livro.ISBN}</td>
           <td>${livro.categoria}</td>
           <td>${livro.preco_alugar}</td>
-          <td>${livro.status}</td>
+          <td>
+            <button type="button"
+              {% if livro.status == livro.DISPONIVEL %}
+                class="btn btn-success"
+                disabled
+              {% elif livro.status == livro.ALUGADO %}
+                class="btn btn-warning"
+                disabled
+              {% else %}
+                class="btn btn-primary"
+                disabled
+              {% endif %}
+              value="{{livro.id}}">{{ livro.status }}
+            </button>
+          </td>
         </tr>
       `);
       $("#corpo-tabela").append(novaLinha);
@@ -168,4 +182,19 @@ function exibir_itens(livros) {
 }
 function get_url_livros() {
   return document.getElementById("url_busca").value;
+}
+function modal_devolver_livro(livro_id) {
+  livro_id = livro_id.value;
+  console.log('testeeeeeeeeeee')
+  modal_escurecer = document.getElementById("container-modal-devolver");
+  modal = document.getElementById("modal-devolver");
+
+  if (modal_escurecer.style.display == "block") {
+    modal_escurecer.style.display = "none";
+    modal.style.display = "none";
+  } else {
+    document.getElementById("botao-confirmar-devolver").value = livro_id;
+    modal_escurecer.style.display = "block";
+    modal.style.display = "block";
+  }
 }

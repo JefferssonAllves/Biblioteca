@@ -28,6 +28,16 @@
     display: none;
     margin-top: 20px;
 }
-.teste{
-    color: #ff00cc;
+
+#container-modal-devolver{
+    display: none;
+}
+#modal-devolver{
+    display: none;
+}
+#container-modal-alugar{
+    display: none;
+}
+#modal-alugar{
+    display: none;
 }

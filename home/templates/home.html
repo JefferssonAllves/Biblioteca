@@ -2,29 +2,21 @@
 {% load static %}
 
 {% block 'head' %}
-  <link rel="stylesheet" href="{% static 'general/vendors/owl-carousel-2/owl.carousel.min.css' %}">
+<link rel="stylesheet" href="{% static 'general/vendors/owl-carousel-2/owl.carousel.min.css' %}">
+<link rel="stylesheet" href="{% static 'home/css/home.css' %}">
 {% endblock %}
 {% block 'content' %}
-  {% for livro in livros %}
-    <p id="teste"></p>
-    <div class="col-md-6 col-xl-4 grid-margin stretch-card">
+{% for categoria in categorias %}
+<p class="titulo-categoria">{{ categoria.nome }}</p>
+<div class="livros-categoria">
+  <div class="livros">
+    {% for livro in livros%}
+    <div class="col-md-6 col-xl-4 grid-margin stretch-card" onclick="vender_livro(livro.id)">
       <div class="card">
         <div class="card-body">
-          <h4 class="card-title">Portfolio Slide</h4>
-          <div class="owl-carousel owl-theme full-width owl-carousel-dash portfolio-carousel owl-loaded owl-drag" id="owl-carousel-basic">
-            <div class="owl-stage-outer">
-              <div class="owl-stage" style="transform: translate3d(-1342px, 0px, 0px); transition: 0.25s; width: 2351px;">
-                <div class="owl-item cloned" style="width: 325.725px; margin-right: 10px;">
-                  <div class="item">
-                    <img src="{% static 'general/img/dashboard/img_1.jpg' %}" alt="">
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div class="owl-nav"><button type="button" role="presentation" class="owl-prev"><i
-                  class="mdi mdi-chevron-left"></i></button><button type="button" role="presentation" class="owl-next"><i
-                  class="mdi mdi-chevron-right"></i></button></div>
-            <div class="owl-dots disabled"></div>
+          <h4 class="card-title">{{livro.titulo}}</h4>
+          <div class="item">
+            <img class="imagem-livro"src="{{ livro.imagem.imagem.url }}" draggable="false" alt="">
           </div>
           <div class="d-flex py-4">
             <div class="preview-list w-100">
@@ -47,10 +39,14 @@
         </div>
       </div>
     </div>
-  {% endfor %}
+    {% endfor %}
+  </div>
+</div>
+{% endfor %}
 {% endblock %}
 
 
 {% block 'script' %}
-  <script src="{% static 'general/js/dashboard.js' %}"></script>
+<script src="{% static 'general/js/dashboard.js' %}"></script>
+<script src="{% static 'home/js/home.js' %}"></script>
 {% endblock %}
