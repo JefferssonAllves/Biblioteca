@@ -1,0 +1,25 @@
+services:
+  djangoapp:
+    container_name: biblioteca
+    build:
+      context: .
+    ports:
+      - 8000:8000
+    volumes:
+      - ./Biblioteca:/Biblioteca
+    env_file:
+      - ./dotenv_files/.env
+    environment:
+      MYSQL_HOST: db
+    depends_on:
+      - db
+  db:
+    container_name: db
+    image: mysql
+    restart: always
+    environment:
+      MYSQL_ALLOW_EMPTY_PASSWORD: 'yes'
+    volumes:
+      - ./data/mysql/data:/var/lib/mysql/
+    env_file:
+      - ./dotenv_files/.env

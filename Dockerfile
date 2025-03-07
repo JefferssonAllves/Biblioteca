@@ -1,6 +1,6 @@
 # syntax=docker/dockerfile:1
 
-FROM python:${PYTHON_VERSION}-slim as base
+FROM python:3.12.9-slim as base
 
 ENV PYTHONDONTWRITEBYTECODE 1
 ENV PYTHONUNBUFFERED 1
@@ -11,7 +11,7 @@ COPY Biblioteca /Biblioteca
 COPY scripts /scripts
 
 
-WORKDIR /app
+WORKDIR /Biblioteca
 
 RUN apt-get update && apt-get install -y \
     build-essential \
@@ -27,10 +27,8 @@ RUN --mount=type=cache,target=/root/.cache/pip \
     python -m pip install --upgrade pip && \
     python -m pip install -r requirements.txt
 
-RUN useradd --create-home --uid 10001 appuser
-USER appuser
-
-
+ENV PATH="/scripts:/venv/bin:$PATH"
 EXPOSE 8000
 
-CMD ["python3", "manage.py", "runserver", "0.0.0.0:8000"]
+
+CMD ["commands.sh"]
