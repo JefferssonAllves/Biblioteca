@@ -1,0 +1,56 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block 'head' %}
+<link rel="stylesheet" href="{% static 'general/vendors/owl-carousel-2/owl.carousel.min.css' %}">
+<link rel="stylesheet" href="{% static 'home/css/home.css' %}">
+{% endblock %}
+{% block 'content' %}
+{% for categoria in categorias %}
+<p class="titulo-categoria">{{ categoria.nome }}</p>
+<div class="livros-categoria">
+  <div class="livros">
+    {% for livro in livros %}
+      {% if livro.categoria.id == categoria.id %}
+      {% csrf_token %}
+      <input type="hidden" value="{{livro.id}}" id="livro_id">
+      <div class="col-md-6 col-xl-4 grid-margin stretch-card" onclick="vender_livro()">
+        <div class="card-livro">
+          <div class="card">
+            <div class="card-body">
+              <div class="item">
+                <img class="imagem-livro" src="{{ livro.imagem.imagem.url }}" draggable="false" alt="">
+              </div>
+              <div class="d-flex py-4">
+                <div class="preview-list w-100">
+                  <div class="preview-item p-0">
+                    <div class="preview-item-content d-flex flex-grow">
+                      <div class="flex-grow">
+                        <div class="d-flex d-md-block d-xl-flex justify-content-between">
+                          <h6 class="preview-subject">{{ livro.titulo }}</h6>
+                          <div class="adicionar-carrinho">
+                            <i onclick="adicionar_carrinho(this)" class="mdi mdi-heart-outline" style="font-size: 1.5rem;"></i>
+                          </div>
+                        </div>
+                        <p class="text-muted">{{ livro.autor }}</p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      {% endif %}
+    {% endfor %}
+  </div>
+</div>
+{% endfor %}
+{% endblock %}
+
+
+{% block 'script' %}
+<script src="{% static 'general/js/dashboard.js' %}"></script>
+<script src="{% static 'home/js/home.js' %}"></script>
+{% endblock %}

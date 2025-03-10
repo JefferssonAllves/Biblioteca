@@ -1,0 +1,62 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <title>Corona Admin</title>
+  <link rel="stylesheet" href="{% static 'general/vendors/mdi/css/materialdesignicons.min.css' %}">
+  <link rel="stylesheet" href="{% static 'general/vendors/css/vendor.bundle.base.css' %}">
+  <link rel="stylesheet" href="{% static 'general/css/style.css' %}">
+  <link rel="shortcut icon" href="{% static 'general/img/favicon.png' %}" />
+  <link rel="stylesheet" href="{% static 'accounts/css/accounts.css' %}">
+
+</head>
+<style>
+  .auth.login-bg {
+    background: radial-gradient(circle, rgb(0, 0, 0, 0), rgba(0, 0, 0, 0.8)),
+    url("{% static 'general/img/auth/Login_bg.jpg' %}");
+    background-size: cover;
+    background-position: center;
+  }
+</style>
+
+<body>
+  <div class="container-scroller">
+    <div class="container-fluid page-body-wrapper full-page-wrapper">
+      <div class="row w-100 m-0">
+        <div class="content-wrapper full-page-wrapper d-flex align-items-center auth login-bg">
+          <div class="card col-lg-4 mx-auto">
+            <div class="card-body px-5 py-5">
+              <h3 class="card-title text-left mb-3">{% block 'titulo' %}{% endblock %}</h3>
+              <form action="{% url 'login' %}"> {% csrf_token%}
+                {% block 'form' %}
+                {% endblock %}
+                <div class="text-center">
+                  <button type="submit" class="btn btn-primary btn-block enter-btn">Login</button>
+                </div>
+                <div class="d-flex">
+                  <button class="btn btn-facebook mr-2 col">
+                    <i class="mdi mdi-facebook"></i> Facebook </button>
+                  <button class="btn btn-google col">
+                    <i class="mdi mdi-google-plus"></i> Google plus </button>
+                </div>
+                {% block 'footer_card' %}
+                {% endblock %}
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <script src="{% static 'general/vendors/js/vendor.bundle.base.js' %}"></script>
+  <script src="{% static 'general/js/off-canvas.js' %}"></script>
+  <script src="{% static 'general/js/hoverable-collapse.js' %}"></script>
+  <script src="{% static 'general/js/misc.js' %}"></script>
+  <script src="{% static 'general/js/settings.js' %}"></script>
+  <script src="{% static 'general/js/todolist.js' %}"></script>
+</body>
+
+</html>

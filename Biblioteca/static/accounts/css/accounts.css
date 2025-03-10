@@ -1,0 +1,18 @@
+
+.card{
+  background-color: rgba(0, 0, 0, 0.67);
+  border-radius: 15px;
+
+}
+
+.card input{
+  background-color: rgba(0, 0, 0, 0);
+  border-color: #009b9ba4;
+  outline: none;
+}
+
+.card input:focus, input:valid{
+  background-color: rgba(0, 0, 0, 0.79);
+  border-color: #00ffff;
+  outline: none;
+}

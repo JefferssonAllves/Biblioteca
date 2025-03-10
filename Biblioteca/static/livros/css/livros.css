@@ -1,0 +1,43 @@
+#adicionar_livros{
+    max-width: 1px;
+    margin-left: 2px;
+    margin-bottom: 20px;
+}
+
+#container-adicionar-livros{
+    display: none;
+}
+#mensagem-livro{
+    display: none;
+    background-color: rgb(90, 146, 82);
+    width: 98%;
+    height: 40px;
+    text-align: left;
+    margin-bottom: 20px;
+    padding-left: 15px;
+    padding-top: 10px;
+    margin-left: 15px;
+    border-radius: 15px;
+}
+#mensagem-span{
+    font-size: 15px;
+    color: rgb(8, 66, 0);
+}
+
+#container-adicionar-categorias{
+    display: none;
+    margin-top: 20px;
+}
+
+#container-modal-devolver{
+    display: none;
+}
+#modal-devolver{
+    display: none;
+}
+#container-modal-alugar{
+    display: none;
+}
+#modal-alugar{
+    display: none;
+}

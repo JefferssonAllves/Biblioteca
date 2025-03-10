@@ -1,0 +1,94 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block 'head' %}
+<link rel="stylesheet" href="{% static 'clientes/css/clientes.css' %}">
+{% endblock %}
+
+{% block 'content' %}
+  <div class="row">
+    <div class="col-lg-12 grid-margin stretch-card">
+      <div class="card">
+        <div class="card-body" id="container-cliente">
+          <div class="row">
+            <div class="col-md-4">
+              <h3 class="card-title">Clientes Cadastrados</h3>
+              <p class="card-description">Clique no cliente para ver suas informações</p>
+            </div>
+            <div class="col-md-8">
+              <input type="hidden" id="url_busca" value="{{ url_busca }}">
+              <input type="text" class="form-control" placeholder="Procurar cliente pelo nome" oninput="realizar_busca(this, get_url_clientes(), 'clientes', 'nome')">
+            </div>
+            <div class="container-tabela">
+              <table class="table table-bordered table-striped table-hover" id="tabela-clientes">{% csrf_token %}
+                <thead>
+                  <tr>
+                    <th width="10" justify="center"> ID</th>
+                    <th> Nome </th>
+                    <th> CPF </th>
+                    <th> Email </th>
+                    <th> Telefone </th>
+                    <th> Endereço </th>
+                  </tr>
+                </thead>
+                <tbody id="corpo-tabela">
+                  {% for cliente in clientes %}
+                    <tr>
+                      <td> {{cliente.id}} </td>
+                      <td> {{cliente.nome}} </td>
+                      <td> {{cliente.cpf}} </td>
+                      <td> {{cliente.email}} </td>
+                      <td> {{cliente.telefone}} </td>
+                      <td> {{cliente.endereco}} </td>
+                    </tr>
+                  {% endfor %}
+                </tbody>
+              </table>
+            </div>
+          </div>
+          <h6 style="margin-top: 20px;">Total de clientes cadastrados: <span style="color: greenyellow;">{{total_clientes}}</span></h6>
+        </div>
+      </div>
+    </div>
+  </div>
+  <button id="adicionar_clientes" type="button" onclick="mostrar_adicionar_cliente()" class="btn btn-outline-success btn-fw">Adicionar Cliente</button>
+  <div class="row">
+    <div class="col-lg-12 grid-margin stretch-card" id="container-adicionar-clientes">
+      <div class="card">
+        <div class="card-body">
+          <form class="forms-sample" method="POST" action="{% url 'clientes' %}">{% csrf_token %}
+            <div class="form-group">
+              <label for="cpf">CPF</label>
+              <input type="text" class="form-control" oninput="mascaraCPF(this)" name="cpf" maxlength="14" placeholder="Ex: 111.111.111-11">
+            </div>
+            <div class="form-group">
+              <label for="nome">Nome</label>
+              <input type="text" class="form-control" name="nome" placeholder="Ex: Joaquim">
+            </div>
+            <div class="form-group">
+              <label for="endereco">Endereço</label>
+              <input type="text" class="form-control" name="endereco" placeholder="Ex: Rua 1">
+            </div>
+            <div class="form-group">
+              <label for="telefone">telefone</label>
+              <input type="text" class="form-control" oninput="mascaraTelefone(this)" name="telefone" maxlength="15" placeholder="Ex: (11) 11111-1111">
+            </div>
+            <div class="form-group">
+              <label for="email">Email</label>
+              <input type="email" class="form-control" name="email" placeholder="Ex: joaquim@gmail.com">
+            </div>
+            <button type="submit" class="btn btn-primary mr-2">Salvar Cliente</button>
+            <button type="button" class="btn btn-dark" onclick="mostrar_adicionar_cliente()">Cancelar</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+
+{% endblock %}
+{% block 'script' %}
+  <script src="{% static 'general/js/formatadores.js' %}"></script>
+  <script src="{% static 'clientes/js/clientes.js' %}"></script>
+  <script src="{% static 'general/js/buscador.js' %}"></script>
+
+{% endblock %}

@@ -1,0 +1,27 @@
+#adicionar_clientes {
+    max-width: 1px;
+    margin-left: 2px;
+    margin-bottom: 20px;
+}
+
+#container-adicionar-clientes {
+    display: none;
+}
+.mostrar-resultados {
+    background-color: #2a3038;
+    list-style-type: none;
+    text-align: left;
+}
+
+#container-modal-devolver{
+    display: none;
+}
+#modal-devolver{
+    display: none;
+}
+#container-modal-alugar{
+    display: none;
+}
+#modal-alugar{
+    display: none;
+}

@@ -1,0 +1,193 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block 'head' %}
+<link rel="stylesheet" href="{% static 'clientes/css/clientes.css' %}">
+{% endblock %}
+{% block 'content' %}
+<div class="row">
+  <div class="col-lg-12 grid-margin stretch-card" id="container-editar-cliente">
+    <div class="card">
+      <div class="card-body">
+        <h3 class="card-title">{{ cliente.nome }}</h3>
+        <p class="card-description"> Editar informações deste cliente </p>
+        <form class="forms-sample" method="POST" action="{% url 'cliente_update' id=cliente.id %}">{% csrf_token %}
+          <input type="hidden" value="{{cliente.id}}" id="cliente_id">
+          <div class="form-group">
+            <label for="exampleInputName1">Nome</label>
+            <input type="text" class="form-control" name="nome" value="{{cliente.nome}}">
+          </div>
+          <div class="form-group">
+            <label for="exampleInputName1">CPF</label>
+            <input type="text" class="form-control" oninput="mascaraCPF(this)" name="cpf" maxlength="14"
+              value="{{cliente.cpf}}">
+          </div>
+          <div class="form-group">
+            <label for="exampleInputEmail3">Email</label>
+            <input type="email" class="form-control" name="email" value="{{cliente.email}}">
+          </div>
+          <div class="form-group">
+            <label for="exampleInputName1">telefone</label>
+            <input type="text" class="form-control" name="telefone" oninput="mascaraTelefone(this)" maxlength="15"
+            value="{{cliente.telefone}}">
+          </div>
+          <div class="form-group">
+            <label for="exampleInputName1">Endereço</label>
+            <input type="text" class="form-control" name="endereco" value="{{cliente.endereco}}">
+          </div>
+          <button type="submit" class="btn btn-primary mr-2">Salvar Alterações</button>
+          <button type="button" onclick="excluir_cliente()" class="btn btn-danger mr-2">Excluir Cliente</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="row" id="emprestimo-livro">
+  <div id="container-modal-alugar" class="modal-overlay"></div>
+  <div id="modal-alugar" class="modal">
+    <h3 class="card-title">Confirmar emprestimo do livro</h3>
+    <p class="card-description">Tem certeza que deseja efetuar o emprestimo deste livro?</p>
+    <div class="row">
+      <div class="col">
+        <button type="button" class="btn btn-primary" id="botao-confirmar-alugar" onclick="alugar_livro(this)">Confirmar</button>
+      </div>
+      <div class="col" style="text-align: right;">
+        <button type="button" class="btn btn-danger" onclick="modal_alugar_livro(this)">Cancelar</button>
+      </div>
+    </div>
+  </div>
+  <div class="col-lg-12 grid-margin stretch-card" id="">
+    <div class="card">
+      <div class="card-body">
+        <div class="row">
+          <div class="col-md-6">
+            <h3 class="card-title">Realizar emprestimo de livro ao cliente</h3>
+          </div>
+          <div class="col-md-6">
+            <input type="hidden" id="url_busca" value="{{ url_busca }}">
+            <input type="text" name="buscar_livros" class="form-control" placeholder="Procurar livro pelo título" oninput="realizar_busca(this, get_url_livros(), 'livros', 'titulo')">
+          </div>
+          <div class="container-tabela">
+            <table class="table table-bordered table-striped table-hover" id="tabela-resultados">{% csrf_token %}
+              <thead>
+                <tr>
+                  <th width="10" justify="center">ID</th>
+                  <th> Titulo </th>
+                  <th> Autor </th>
+                  <th> Categoria </th>
+                  <th> Preço para alugar </th>
+                  <th width="100" justify="center"> Status </th>
+                </tr>
+              </thead>
+              <tbody id="corpo-tabela">
+                {% for livro in livros %}
+                <tr>
+                    <td> {{livro.id}} </td>
+                    <td> {{livro.titulo}} </td>
+                    <td> {{livro.autor}} </td>
+                    <td> {{livro.categoria}} </td>
+                    <td> R${{livro.preco_alugar}} </td>
+                    <td>
+                      <button type="button"
+                          {% if livro.status == livro.DISPONIVEL %}
+                            class="btn badge-outline-success"
+                          {% elif livro.status == livro.ALUGADO %}
+                            class="btn badge-outline-warning"
+                            disabled
+                          {% else %}
+                            class="btn badge-outline-primary"
+                            disabled
+                          {% endif %}
+                        value="{{livro.id}}"
+                        onclick="modal_alugar_livro(this)">{{ livro.status }}
+                      </button>
+                    </td>
+                  </tr>
+                {% endfor %}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="row">
+  <div id="container-modal-devolver" class="modal-overlay"></div>
+  <div id="modal-devolver" class="modal">
+    <h3 class="card-title">Confirmar entrega do livro</h3>
+    <p class="card-description">Tem certeza que deseja efetuar a devolução deste livro?</p>
+    <div class="row">
+      <div class="col">
+        <button type="button" class="btn btn-primary" id="botao-confirmar-devolver" onclick="devolver_livro(this)">Confirmar</button>
+      </div>
+      <div class="col" style="text-align: right;">
+        <button type="button" class="btn btn-danger" onclick="modal_devolver_livro(this)">Cancelar</button>
+      </div>
+    </div>
+  </div>
+  <div class="col-lg-12 grid-margin stretch-card" id="container-editar-cliente">
+    <div class="card">
+      <div class="card-body" id="container-cliente">
+        <div class="row">
+          <div class="col-md-4">
+            <h3 class="card-title">Histórico de livros alugados</h3>
+          </div>
+          <div class="container-tabela">
+            <table class="table table-bordered table-striped table-hover">{% csrf_token %}
+              <thead>
+                <tr>
+                  <th width="10" justify="center">ID</th>
+                  <th> Titulo </th>
+                  <th> Categoria </th>
+                  <th> Data do emprestimo</th>
+                  <th> Data de entrega </th>
+                  <th> Preço para alugar </th>
+                  <th width="100" justify="center"> Status </th>
+                </tr>
+              </thead>
+              <tbody id="corpo-tabela">
+                {% for livro in livros_alugados %}
+                <tr>
+                  <td> {{livro.livro.id}} </td>
+                  <td> {{livro.livro.titulo}} </td>
+                  <td> {{livro.livro.categoria}} </td>
+                  <td> {{livro.data_inicio}} </td>
+                  <td> {{livro.data_entrega}} </td>
+                  <td> R${{livro.livro.preco_alugar}} </td>
+                  <td>
+                    <button type="button"
+                        {% if livro.devolvido %}
+                          class="btn badge-outline-secondary"
+                          disabled
+                        {% else %}
+                          class="btn badge-outline-primary"
+                        {% endif %}
+                        value="{{livro.id}}"
+                        onclick="modal_devolver_livro(this)">
+                        {% if livro.devolvido %}
+                          Devolvido
+                        {% else %}
+                          Alugado
+                        {% endif %}
+                    </button>
+                  </td>
+                </tr>
+                {% endfor %}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}
+{% block 'script' %}
+
+<script src="{% static 'general/js/formatadores.js' %}"></script>
+<script src="{% static 'clientes/js/clientes.js' %}"></script>
+<script src="{% static 'livros/js/livros.js' %}"></script>
+<script src="{% static 'general/js/buscador.js' %}"></script>
+
+{% endblock %}

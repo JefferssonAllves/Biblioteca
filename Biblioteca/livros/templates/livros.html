@@ -1,0 +1,137 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block 'head' %}
+<link rel="stylesheet" href="{% static 'livros/css/livros.css' %}">
+{% endblock %}
+
+{% block 'content' %}
+  <div class="row">
+    <div id="mensagem-livro">
+      <span id="mensagem-span">Teste</span>
+    </div>
+    <div class="col-lg-12 grid-margin stretch-card">
+      <div class="card">
+        <div class="card-body">
+          <div class="row">
+            <div class="col-md-4">
+              <h3 class="card-title">Livros Cadastrados</h3>
+              <p class="card-description">Clique no livro para ver suas informações</p>
+            </div>
+            <div class="col-md-8">
+              <input type="hidden" id="url_busca" value="{{ url_busca }}">
+              <input type="text" class="form-control" placeholder="Procurar livro pelo título" oninput="realizar_busca(this, get_url_livros(), 'livros', 'titulo')">
+            </div>
+            <div class="container-tabela">
+              <table class="table table-bordered table-striped table-hover" id="tabela-livros">{% csrf_token %}
+                <thead>
+                  <tr>
+                    <th width="10" justify="center"> ID</th>
+                    <th> Titulo </th>
+                    <th> Autor </th>
+                    <th> ISBN </th>
+                    <th> Categoria </th>
+                    <th> Preço </th>
+                    <th> Status </th>
+                  </tr>
+                </thead>
+                <tbody id="corpo-tabela">
+                  {% for livro in livros %}
+                  <tr>
+                    <td> {{livro.id}} </td>
+                    <td> {{livro.titulo}} </td>
+                    <td> {{livro.autor}} </td>
+                    <td> {{livro.ISBN}} </td>
+                    <td> {{livro.categoria}} </td>
+                    <td> R${{livro.preco_venda}} </td>
+                    <td>
+                      <button type="button"
+                        {% if livro.status == livro.DISPONIVEL %}
+                          class="btn badge-outline-success"
+                          disabled
+                        {% elif livro.status == livro.ALUGADO %}
+                          class="btn badge-outline-warning"
+                          disabled
+                        {% else %}
+                          class="btn badge-outline-primary"
+                          disabled
+                        {% endif %}
+                        value="{{livro.id}}">{{ livro.status }}
+                    </button>
+                    </td>
+                  </tr>
+                  {% endfor %}
+                </tbody>
+              </table>
+            </div>
+          </div>
+          <h6 style="margin-top: 20px;">Total de livros cadastrados: <span
+              style="color: greenyellow;">{{quantidade_disponivel}}</span></h6>
+        </div>
+      </div>
+    </div>
+  </div>
+  <button id="adicionar_livros" type="button" onclick="mostrar_adicionar_livro()" class="btn btn-outline-success btn-fw">Adicionar Livro</button>
+  <!-- <button id="adicionar_livros" type="button" onclick="teste()" class="btn btn-outline-success btn-fw">TESTE</button> -->
+  <div class="row">
+    <div class="col-lg-12 grid-margin stretch-card" id="container-adicionar-livros">
+      <div class="card">
+        <div class="card-body">
+          <form class="forms-sample" method="POST" enctype="multipart/form-data" action="{% url 'livros' %}">{% csrf_token %}
+            <div class="form-group">
+              <label for="titulo">Titulo</label>
+              <input type="text" class="form-control" name="titulo">
+            </div>
+            <div class="form-group">
+              <label for="autor">Autor</label>
+              <input type="text" class="form-control" name="autor">
+            </div>
+            <div class="form-group">
+              <label for="isbn">ISBN</label>
+              <input type="text" class="form-control" name="isbn">
+            </div>
+            <div class="form-group">
+              <label>Adicionar imagem do livro</label>
+              <input type="file" name="imagem" class="file-upload-default">
+              <div class="input-group col-xs-12">
+                <input type="text" class="form-control file-upload-info" disabled="" placeholder="Procurar Imagem">
+                <span class="input-group-append">
+                  <button class="file-upload-browse btn btn-primary" type="button">Arquivo</button>
+                </span>
+              </div>
+            </div>
+            <div class="form-group">
+              <div class="row">
+                <div class="col-md">
+                  <div class="form-group">
+                    <label for="categoria">Categoria</label>
+                    <select class="form-control" name="categoria">
+                      <option selected disabled>Escolha a categoria do livro</option>
+                      {% for categoria in categorias %}
+                        <option value="{{ categoria.id }}">{{ categoria.nome }}</option>
+                      {% endfor %}
+                    </select>
+                  </div>
+                </div>
+                <div class="col-md">
+                  <div class="form-group">
+                    <label for="preco">Preço de venda</label>
+                    <input type="text" class="form-control" name="preco">
+                  </div>
+                </div>
+              </div>
+            </div>
+            <button type="submit" class="btn btn-primary mr-2">Salvar Livro</button>
+            <button type="button" class="btn btn-dark" onclick="mostrar_adicionar_livro()">Cancelar</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+{% endblock %}
+{% block 'script' %}
+
+<script src="{% static 'general/js/file-upload.js' %}"></script>
+<script src="{% static 'general/js/buscador.js' %}"></script>
+<script src="{% static 'livros/js/livros.js' %}"></script>
+{% endblock %}
