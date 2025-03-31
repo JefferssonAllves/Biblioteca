@@ -29,6 +29,6 @@ RUN --mount=type=cache,target=/root/.cache/pip \
 
 ENV PATH="/scripts:/venv/bin:$PATH"
 EXPOSE 8000
-
+EXPOSE 3306
 
 CMD ["commands.sh"]

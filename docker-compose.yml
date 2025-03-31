@@ -9,17 +9,24 @@ services:
       - ./Biblioteca:/Biblioteca
     env_file:
       - ./dotenv_files/.env
-    environment:
-      MYSQL_HOST: db
     depends_on:
       - db
+    networks:
+      - my_network
+
   db:
     container_name: db
-    image: mysql
+    image: mysql:8.0
     restart: always
-    environment:
-      MYSQL_ALLOW_EMPTY_PASSWORD: 'yes'
+    ports:
+      - "3306:3306"
     volumes:
       - ./data/mysql/data:/var/lib/mysql/
+      - ./mysql-config/my.cnf:/etc/mysql/my.cnf
     env_file:
       - ./dotenv_files/.env
+    networks:
+      - my_network
+networks:
+  my_network:
+    driver: bridge
