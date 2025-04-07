@@ -1,12 +1,17 @@
+from django.contrib import admin
 from django.urls import path, include
 from django.conf import settings
 from django.conf.urls.static import static
-
+from clientes.views import register
 urlpatterns = [
+    path('admin/', admin.site.urls),
+
     path('', include('home.urls')),
     path('clientes/', include('clientes.urls')),
     path('livros/', include('livros.urls')),
     path('accounts/', include('django.contrib.auth.urls'), name='login'),
+    path('accounts/register/', register, name='register'),
+
 
 ]
 

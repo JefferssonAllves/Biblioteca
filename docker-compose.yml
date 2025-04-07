@@ -21,7 +21,7 @@ services:
     ports:
       - "3306:3306"
     volumes:
-      - ./data/mysql/data:/var/lib/mysql/
+      - ./data/mysql/data:/var/lib/mysql_backup
       - ./mysql-config/my.cnf:/etc/mysql/my.cnf
     env_file:
       - ./dotenv_files/.env

@@ -2,17 +2,21 @@
 {% block 'titulo' %}
   Login
 {% endblock %}
+{% block 'action' %}{% url 'login_cliente' %}{% endblock %}
 {% block 'form' %}
-  <!-- <div class="form-group">
+  <div class="form-group">
     <label for="email">Email</label>
     <input type="email" class="form-control" id="email" name="email" required>
   </div>
   <div class="form-group">
     <label for="password">Senha</label>
     <input type="password" class="form-control" id="password" name="password" required>
-  </div> -->
-  {{ form.as_p}}
+  </div>
+  <div class="text-center">
+    <button type="submit" class="btn btn-primary btn-block enter-btn">Entrar</button>
+  </div>
+  <!-- {{ form.as_p}} -->
 {% endblock %}
 {% block 'footer_card' %}
-  <p class="sign-up">Não tem uma conta?<a href="#"> Cadastre-se</a></p>
+  <p class="sign-up">Não tem uma conta?<a href="{% url 'register' %}"> Cadastre-se</a></p>
 {% endblock%}

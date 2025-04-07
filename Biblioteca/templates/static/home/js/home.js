@@ -3,7 +3,6 @@ function vender_livro() {
 }
 
 function adicionar_carrinho(element) {
-  console.log(element.className);
   livro_id = document.getElementById("livro_id").value;
   csrftoken = document.querySelector("[name=csrfmiddlewaretoken]");
 
@@ -14,7 +13,7 @@ function adicionar_carrinho(element) {
   if (element.className == "mdi mdi-heart-outline") {
     element.className = "mdi mdi-heart text-danger";
     url = "../clientes/add_livro_carrinho/";
-    
+
   } else {
     element.className = "mdi mdi-heart-outline";
     url = "../clientes/rm_livro_carrinho/";

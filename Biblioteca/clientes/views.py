@@ -7,7 +7,28 @@ from django.core import serializers
 import json
 from datetime import datetime, timedelta
 from django.contrib import messages
-from .forms import CreateClienteUser
+from django.contrib.auth.models import User
+from django.contrib.auth import authenticate
+
+
+def register(request):
+  if request.method == 'POST':
+    email = request.POST.get('email')
+    senha = request.POST.get('password')
+    user = User.objects.create_user(username=email, password=senha)
+    return redirect(reverse('login'))
+  return render(request, './register.html')
+
+
+def login(request):
+  if request.method == 'POST':
+    email = request.POST.get('email')
+    senha = request.POST.get('password')
+    user = authenticate(username=email, password=senha)
+    print(email, senha, user)
+    if user is not None:
+      return redirect(reverse('home'))
+  return redirect(reverse('login'))
 
 def clientes(request):
   if request.method == 'POST':
@@ -26,17 +47,6 @@ def clientes(request):
   clientes = Clientes.objects.all()
   return render(request, './clientes.html', {'clientes': clientes, 'total_clientes': len(clientes), 'url_busca': reverse('clientes_json')})
 
-def register(request):
-  if request.method == 'POST':
-    form = CreateClienteUser(request.POST)
-    if form.is_valid():
-      form.save()
-      messages.success(request, 'Cadastro realizado com sucesso!')
-      return redirect('login')  # Redireciona para a página de login após o registro
-    else:
-      form = CreateClienteUser()
-
-    return render(request, 'accounts/register.html', {'form': form})
 def cliente_update(request, id):
   try:
     if request.method == 'POST':
@@ -96,6 +106,7 @@ def devolver_livro(request, id):
   return JsonResponse({'redirect': 'etste'})
 
 def add_livro_carrinho(request):
+  print('veio pra ca')
   if request.method == 'POST':
     livro_id = request.POST.get('livro_id')
     Carrinho.objects.create(livro_id=livro_id, cliente_id=16).save() #TODO LOGIN NECESSARIO

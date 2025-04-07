@@ -1,6 +1,5 @@
 from django.db import models
 from livros.models import Livros
-from django.contrib.auth.models import AbstractUser, Group, Permission
 
 
 class Alugados(models.Model):
@@ -23,23 +22,6 @@ class Clientes(models.Model):
 
   def __str__(self):
     return self.nome
-
-class CustomUser(AbstractUser):
-  cliente = models.OneToOneField(Clientes, on_delete=models.CASCADE)
-
-  groups = models.ManyToManyField(
-    Group,
-    related_name="customuser_set",
-    blank=True,
-  )
-
-  user_permissions = models.ManyToManyField(
-    Permission,
-    related_name="customuser_set",
-    blank=True,
-  )
-  def __str__(self):
-    return self.username
 
 class Carrinho(models.Model):
   id = models.AutoField(primary_key=True)
