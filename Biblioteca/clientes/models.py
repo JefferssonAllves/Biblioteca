@@ -1,6 +1,6 @@
 from django.db import models
 from livros.models import Livros
-
+from django.contrib.auth.models import User
 
 class Alugados(models.Model):
   id = models.AutoField(primary_key=True)
@@ -13,6 +13,8 @@ class Alugados(models.Model):
     return f'{self.cliente} - {self.livro}'
 
 class Clientes(models.Model):
+  user = models.OneToOneField(User,on_delete=models.CASCADE,verbose_name='Usuário',related_name='cliente', null=True, blank=True)
+
   id = models.AutoField(primary_key=True)
   cpf = models.CharField(max_length=14, unique=True)
   nome = models.CharField(max_length=50)

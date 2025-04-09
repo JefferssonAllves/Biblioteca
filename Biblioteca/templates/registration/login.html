@@ -3,7 +3,7 @@
   Login
 {% endblock %}
 {% block 'action' %}{% url 'login_cliente' %}{% endblock %}
-{% block 'form' %}
+{% block 'form' %}{% csrf_token%}
   <div class="form-group">
     <label for="email">Email</label>
     <input type="email" class="form-control" id="email" name="email" required>

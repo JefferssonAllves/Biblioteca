@@ -6,7 +6,7 @@
 {% block 'action' %}
   {% url 'cadastrar_cliente' %}
 {% endblock %}
-{% block 'form' %}
+{% block 'form' %}{% csrf_token%}
   <div class="form-group">
     <label for="nome">Nome</label>
     <input type="text" class="form-control" id="nome" name="nome" required>

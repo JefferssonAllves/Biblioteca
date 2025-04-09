@@ -8,25 +8,43 @@ import json
 from datetime import datetime, timedelta
 from django.contrib import messages
 from django.contrib.auth.models import User
-from django.contrib.auth import authenticate
+from django.contrib.auth import authenticate, login as django_login
+from django.contrib.auth.decorators import login_required
+
+
+def teste(request):
+  if request.user.is_authenticated:
+    return HttpResponse(f"""
+      Usuário logado: {request.user.username}<br>
+      Email: {request.user.email}<br>
+      ID: {request.user.id}
+      """)
+  else:
+    return HttpResponse("Nenhum usuário logado.")
 
 
 def register(request):
   if request.method == 'POST':
+    #------ USER DJANGO ------
+    nome = request.POST.get('nome')
     email = request.POST.get('email')
     senha = request.POST.get('password')
-    user = User.objects.create_user(username=email, password=senha)
+    user = User.objects.create_user(username=email, first_name=nome.split()[0], last_name=nome, email=email ,password=senha)
+    #------ USER CLIENTE ------
+    cpf = request.POST.get('cpf')
+    telefone = request.POST.get('telefone')
+    endereco = request.POST.get('endereco')
+    Clientes(id=user.id, nome=nome, cpf=cpf, telefone=telefone, endereco=endereco, email=email, user=user).save()
     return redirect(reverse('login'))
   return render(request, './register.html')
-
 
 def login(request):
   if request.method == 'POST':
     email = request.POST.get('email')
     senha = request.POST.get('password')
     user = authenticate(username=email, password=senha)
-    print(email, senha, user)
     if user is not None:
+      django_login(request, user)
       return redirect(reverse('home'))
   return redirect(reverse('login'))
 
@@ -106,10 +124,11 @@ def devolver_livro(request, id):
   return JsonResponse({'redirect': 'etste'})
 
 def add_livro_carrinho(request):
-  print('veio pra ca')
   if request.method == 'POST':
     livro_id = request.POST.get('livro_id')
-    Carrinho.objects.create(livro_id=livro_id, cliente_id=16).save() #TODO LOGIN NECESSARIO
+    Carrinho.objects.create(livro_id=livro_id, cliente_id=request.user.id).save() #TODO LOGIN NECESSARIO
+    print(Carrinho.objects.filter(cliente=request.user.id))
+
 
   return JsonResponse({'status': 'sucess'})
 def rm_livro_carrinho(request):

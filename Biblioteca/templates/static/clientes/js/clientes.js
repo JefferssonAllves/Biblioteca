@@ -139,6 +139,7 @@ function modal_alugar_livro(livro_id) {
 }
 function devolver_livro(emprestimo_id) {
   emprestimo_id = emprestimo_id.value;
+  console.log(emprestimo_id)
   csrf_token = document.querySelector("[name=csrfmiddlewaretoken]");
 
   data = new FormData();

@@ -78,6 +78,7 @@
                       {% else %}
                         class="btn badge-outline-primary"
                       {% endif %}
+                      value="{{livro.id}}"
                       onclick="modal_devolver_livro(this)">
                       {% if livro.devolvido %}
                         Devolvido

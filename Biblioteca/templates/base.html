@@ -10,8 +10,9 @@
     <link rel="stylesheet" href="{% static 'general/vendors/css/vendor.bundle.base.css' %}">
     {% block 'head' %}{% endblock %}
     <link rel="stylesheet" href="{% static 'general/css/style.css' %}">
-    <link rel="stylesheet" href="{% static 'general/css/modal.css' %}">
+
     <link rel="shortcut icon" href="{% static 'general/img/favicon.png' %}" />
+    <style type="text/css" id="operaUserStyle"></style>
 </head>
 
 <body class>
@@ -24,6 +25,56 @@
                                 src="{% static 'general/img/logo-mini.svg/' %}" alt="logo" /><a>
             </div>
             <ul class="nav">
+                <li class="nav-item profile">
+                    <div class="profile-desc">
+                        <div class="profile-pic">
+                            <div class="count-indicator">
+                                <img class="img-xs rounded-circle " src="{% static 'general/img/faces/face15.jpg' %}" alt="">
+                                <span class="count bg-success"></span>
+                            </div>
+                            <div class="profile-name">
+                                <h5 class="mb-0 font-weight-normal">{{user.first_name}}</h5>
+                                <span>Gold Member</span>
+                            </div>
+                        </div>
+                        <a href="#" id="profile-dropdown" data-toggle="dropdown" aria-expanded="false"><i
+                                class="mdi mdi-dots-vertical"></i></a>
+                        <div class="dropdown-menu dropdown-menu-right sidebar-dropdown preview-list" aria-labelledby="profile-dropdown">
+                            <a href="#" class="dropdown-item preview-item">
+                                <div class="preview-thumbnail">
+                                    <div class="preview-icon bg-dark rounded-circle">
+                                        <i class="mdi mdi-settings text-primary"></i>
+                                    </div>
+                                </div>
+                                <div class="preview-item-content">
+                                    <p class="preview-subject ellipsis mb-1 text-small">Account settings</p>
+                                </div>
+                            </a>
+                            <div class="dropdown-divider"></div>
+                            <a href="#" class="dropdown-item preview-item">
+                                <div class="preview-thumbnail">
+                                    <div class="preview-icon bg-dark rounded-circle">
+                                        <i class="mdi mdi-onepassword  text-info"></i>
+                                    </div>
+                                </div>
+                                <div class="preview-item-content">
+                                    <p class="preview-subject ellipsis mb-1 text-small">Change Password</p>
+                                </div>
+                            </a>
+                            <div class="dropdown-divider"></div>
+                            <a href="#" class="dropdown-item preview-item">
+                                <div class="preview-thumbnail">
+                                    <div class="preview-icon bg-dark rounded-circle">
+                                        <i class="mdi mdi-calendar-today text-success"></i>
+                                    </div>
+                                </div>
+                                <div class="preview-item-content">
+                                    <p class="preview-subject ellipsis mb-1 text-small">To-do list</p>
+                                </div>
+                            </a>
+                        </div>
+                    </div>
+                </li>
                 <!-- NAVEGAÇÂO -->
                 <li class="nav-item nav-category">
                     <span class="nav-link">Navegação</span>
@@ -177,64 +228,20 @@
                         <li class="nav-item dropdown border-left">
                             <a class="nav-link count-indicator dropdown-toggle" id="notificationDropdown" href="#"
                                 data-toggle="dropdown">
-                                <i class="mdi mdi-bell"></i>
+                                <i class="mdi mdi-cart "></i>
                                 <span class="count bg-danger"></span>
                             </a>
-                            <div class="dropdown-menu dropdown-menu-right navbar-dropdown preview-list"
-                                aria-labelledby="notificationDropdown">
-                                <h6 class="p-3 mb-0">Notifications</h6>
-                                <div class="dropdown-divider"></div>
-                                <a class="dropdown-item preview-item">
-                                    <div class="preview-thumbnail">
-                                        <div class="preview-icon bg-dark rounded-circle">
-                                            <i class="mdi mdi-calendar text-success"></i>
-                                        </div>
-                                    </div>
-                                    <div class="preview-item-content">
-                                        <p class="preview-subject mb-1">Event today</p>
-                                        <p class="text-muted ellipsis mb-0"> Just a reminder that you have an event
-                                            today </p>
-                                    </div>
-                                </a>
-                                <div class="dropdown-divider"></div>
-                                <a class="dropdown-item preview-item">
-                                    <div class="preview-thumbnail">
-                                        <div class="preview-icon bg-dark rounded-circle">
-                                            <i class="mdi mdi-settings text-danger"></i>
-                                        </div>
-                                    </div>
-                                    <div class="preview-item-content">
-                                        <p class="preview-subject mb-1">Settings</p>
-                                        <p class="text-muted ellipsis mb-0"> Update dashboard </p>
-                                    </div>
-                                </a>
-                                <div class="dropdown-divider"></div>
-                                <a class="dropdown-item preview-item">
-                                    <div class="preview-thumbnail">
-                                        <div class="preview-icon bg-dark rounded-circle">
-                                            <i class="mdi mdi-link-variant text-warning"></i>
-                                        </div>
-                                    </div>
-                                    <div class="preview-item-content">
-                                        <p class="preview-subject mb-1">Launch Admin</p>
-                                        <p class="text-muted ellipsis mb-0"> New admin wow! </p>
-                                    </div>
-                                </a>
-                                <div class="dropdown-divider"></div>
-                                <p class="p-3 mb-0 text-center">See all notifications</p>
-                            </div>
                         </li>
-                        <li class="nav-item dropdown">
+                        <li class="nav-item dropdown" onclick="mostrar_menu()">
                             <a class="nav-link" id="profileDropdown" href="#" data-toggle="dropdown">
                                 <div class="navbar-profile">
                                     <img class="img-xs rounded-circle" src="{% static 'general/img/faces/face15.jpg' %}"
                                         alt="">
-                                    <p class="mb-0 d-none d-sm-block navbar-profile-name">Henry Klein</p>
+                                    <p class="mb-0 d-none d-sm-block navbar-profile-name">{{user.first_name}}</p>
                                     <i class="mdi mdi-menu-down d-none d-sm-block"></i>
                                 </div>
                             </a>
-                            <div class="dropdown-menu dropdown-menu-right navbar-dropdown preview-list show"
-                                aria-labelledby="profileDropdown">
+                            <div class="dropdown-menu dropdown-menu-right navbar-dropdown preview-list" id="menu-profile" aria-labelledby="profileDropdown">
                                 <h6 class="p-3 mb-0">Profile</h6>
                                 <div class="dropdown-divider"></div>
                                 <a class="dropdown-item preview-item">
@@ -248,16 +255,22 @@
                                     </div>
                                 </a>
                                 <div class="dropdown-divider"></div>
-                                <a href="{% url 'login' %}" class="dropdown-item preview-item">
-                                    <div class="preview-thumbnail">
-                                        <div class="preview-icon bg-dark rounded-circle">
-                                            <i class="mdi mdi-logout text-danger"></i>
+                                <form action="{% url 'logout' %}" method="POST">
+                                    {% csrf_token %}
+                                    <button type="submit" class="dropdown-item preview-item"
+                                        style="background: none; border: none; cursor: pointer;">
+                                        <div class="preview-thumbnail">
+                                            <div class="preview-icon bg-dark rounded-circle">
+                                                <i class="mdi mdi-logout text-danger"></i>
+                                            </div>
                                         </div>
-                                    </div>
-                                    <div class="preview-item-content">
-                                        <p class="preview-subject mb-1">Sair</p>
-                                    </div>
-                                </a>
+                                        <div class="preview-item-content">
+                                            <p class="preview-subject mb-1">Sair</p>
+                                        </div>
+                                    </button>
+                                </form>
+
+
                                 <div class="dropdown-divider"></div>
                                 <p class="p-3 mb-0 text-center">Advanced settings</p>
                             </div>
@@ -289,15 +302,16 @@
             </div>
         </div>
     </div>
-
+    <script src="{% static 'general/vendors/js/vendor.bundle.base.js' %}"></script>
     <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
-    <script src="{% static 'general/js/dashboard.js' %}"></script>
+    <script src="{% static 'general/js/off-canvas.js' %}"></script>
     <script src="{% static 'general/js/hoverable-collapse.js' %}"></script>
     <script src="{% static 'general/js/misc.js' %}"></script>
-    <script src="{% static 'general/js/off-canvas.js' %}"></script>
     <script src="{% static 'general/js/settings.js' %}"></script>
-    <script src="{% static 'general/js/sidebar.js' %}"></script>
     <script src="{% static 'general/js/todolist.js' %}"></script>
+
+    <script src="{% static 'general/js/sidebar.js' %}"></script>
+
     {% block 'script' %}{% endblock %}
 
 
